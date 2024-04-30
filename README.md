@@ -63,4 +63,115 @@ const App = () => {
 
 export default App;
 
-23/04/24
+24/04/24
+
+<h2>React-Router Dom</h2>
+
+29/04/24
+
+<h2>Conetx-Api</h2>
+
+import React, { useContext, useState } from 'react';
+import { profilename } from '../App';
+
+const Profile = () => {
+    const { name, setName } = useContext(profilename);
+  
+
+    const updateName = (e) => {
+        e.preventDefault(); 
+        const newName = e.target.elements.newName.value;
+        setName(newName); 
+        e.target.elements.newName.value = "";
+    };
+
+    return (
+        <div>
+            <form onSubmit={updateName}>
+                <input type='text' defaultValue={name} name='newName'/>
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+    );
+};
+
+export default Profile;
+
+
+import React, { createContext ,useState} from 'react'
+import Profile from './components/Profile';
+
+export const profilename=createContext();
+
+const App = () => {
+ 
+   const [name,setName]=useState("Guvi");
+
+   const updateName=(newName)=>{
+    setName(newName);
+   }
+
+  return (
+    <div>
+        <p>
+            Profilename: {name}
+        </p>
+        <profilename.Provider value={{name,updateName}}>
+            <Profile/>
+        </profilename.Provider>
+    </div>
+  )
+}
+
+export default App
+
+-[] UseReducer
+
+App.jsx
+
+import {useReducer} from 'react'
+import { initialState, reducer } from "./reducers/countReducer";
+
+const App = () => {
+
+   const [state, dispatch] = useReducer(reducer,initialState)
+
+  return (
+    <div>
+        <h2>Counter: {state.count}</h2>
+        <button onClick={()=>dispatch({type:'incr'})}>Increment </button>
+        <button onClick={()=>dispatch({type:'decr'})}>decrement </button>
+    </div>
+  )
+}
+
+export default App
+
+countReducer.js
+
+const initialState = {
+    count: 0
+}
+
+function reducer(state, action) {
+    switch (action.type) {
+        case 'incr':
+            return {
+                count: state.count + 1
+            }
+        case 'decr':
+            return {
+                count: state.count - 1
+            }
+        default:
+            return state;
+
+    }
+
+}
+
+export {
+    initialState,
+    reducer
+}
+
